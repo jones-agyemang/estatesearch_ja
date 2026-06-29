@@ -9,6 +9,13 @@ When('I enter valid query details') do
   click_button "Submit query"
 end
 
-Then('I should receive a notification of success') do
-  expect(page).to have_content('Query successfully raised!')
+When('I enter a question with title {string}, body {string} and category {string}') do |title, body, category|
+  fill_in 'question[title]', with: title
+  fill_in 'question[body]', with: body
+  fill_in 'question[category]', with: category
+  click_button "Submit query"
+end
+
+Then('I should see notification {string}') do |notification|
+  expect(page).to have_content(notification)
 end

@@ -11,6 +11,9 @@ class QuestionsController < ApplicationController
     if @question.save
       flash[:alert] = "Query successfully raised!"
       redirect_to @question
+    else
+      flash[:error] = "Invalid query details."
+      render :new, errors: @question.errors.full_messages, status: :unprocessable_entity
     end
   end
 

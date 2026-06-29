@@ -1,5 +1,14 @@
 <h1>Legal Advice Q&A</h1>
 
+<%= flash[:error] %>
+<ul>
+  <% @question.errors.full_messages.each do |error_msg| %>
+    <div>
+      <li><%= error_msg %></li>
+    </div>
+  <% end %>
+</ul>
+
 <h3>Raise a Query</h3>
 <%= form_with model: @question do |form| %>
   <div>
