@@ -14,5 +14,7 @@ RSpec.describe Question, type: :model do
 
   describe 'associations' do
     it { is_expected.to belong_to(:user) }
+    it { is_expected.to have_many(:responses).dependent(:destroy) }
+    it { is_expected.to have_many(:lawyers).through(:responses) }
   end
 end

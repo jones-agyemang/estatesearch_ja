@@ -15,3 +15,12 @@ end
 Then('I should be able to see the open questions') do
   expect(page).to have_content("Open Question#a89cvbx")
 end
+
+When('I provide a response to a question') do
+  visit "/lawyers/dashboard"
+
+  click_on "Respond"
+  fill_in "response[body]", with: Faker::Lorem.sentence
+  fill_in "response[fee]", with: "20.00"
+  click_button "Submit response"
+end
