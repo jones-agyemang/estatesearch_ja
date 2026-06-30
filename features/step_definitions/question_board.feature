@@ -23,3 +23,11 @@ Feature: Manage User Questions
             |          | I need help with deed terms | Property law | Title can't be blank     |
             | Freehold |                             | Property law | Body can't be blank      |
             | Freehold | I need help with deed terms |              | Category can't be blank  |
+
+    Scenario Outline: Status > Freshly Submitted Query
+       And I enter a question with title "<title>", body "<body>" and category "<category>"
+       Then I should see status as "<status>"
+
+       Examples:
+           | title    | body                        | category     | notification               | status |
+           | Freehold | I need help with deed terms | Property law | Query successfully raised! | open   |

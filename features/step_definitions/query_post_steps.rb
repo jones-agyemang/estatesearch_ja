@@ -19,3 +19,7 @@ end
 Then('I should see notification {string}') do |notification|
   expect(page).to have_content(notification)
 end
+
+Then('I should see status as {string}') do |status|
+  expect(page).to have_content(status)
+end

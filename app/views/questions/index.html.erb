@@ -1,0 +1,28 @@
+<h1>Questions</h1>
+
+<div><%= flash[:notice] %></div>
+<% if @questions.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Body</th>
+        <th>Category</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @questions.each do |question| %>
+        <tr>
+          <td><%= question.title %></td>
+          <td><%= question.body %></td>
+          <td><%= question.category %></td>
+          <td><%= question.status %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>No questions have been submitted yet.</p>
+<% end %>
