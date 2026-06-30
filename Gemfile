@@ -51,9 +51,11 @@ group :development, :test do
   gem "brakeman", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
+  gem "binding_of_caller"
+  gem "faker"
+  gem "factory_bot_rails"
   gem "rubocop-rails-omakase", require: false
   gem "rspec-rails"
-  gem "binding_of_caller"
   gem "pry"
 end
 

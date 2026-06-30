@@ -8,7 +8,11 @@ Feature: Authentication
     And I enter my registration details
     Then I should be granted access
   
-  Scenario: Successful Login
-    Given I am a registered user
-    When I log in with valid credentials
+  Scenario Outline: Successful Login
+    Given I registered with email "<email>" and password "<password>" as user of type "<type>"
+    When I log in with email "<email>" and password "<password>"
     Then I should be granted access
+
+    Examples:
+    | email                            | password | type   |
+    | lawyer.john.pearson@example.com  | s3kret   | lawyer |
