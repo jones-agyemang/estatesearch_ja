@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
-  resources :questions
+  devise_for :users
+
+  resources :users do
+    resources :questions
+  end
 
   get "up" => "rails/health#show", as: :rails_health_check
-  root "questions#new"
+  root "questions#index"
 end

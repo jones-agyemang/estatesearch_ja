@@ -1,4 +1,6 @@
 class QuestionsController < ApplicationController
+  before_action :authenticate_user!
+
   before_action :set_user
   before_action :set_question, only: [ :create ]
 
@@ -14,7 +16,7 @@ class QuestionsController < ApplicationController
 
   def create
     if @question.save
-      redirect_to questions_path, notice: "Query successfully raised!"
+      redirect_to user_questions_path, notice: "Query successfully raised!"
     else
       flash.now[:error] = "Invalid query details."
       render :new, status: :unprocessable_entity
@@ -24,7 +26,7 @@ class QuestionsController < ApplicationController
   private
 
   def set_user
-    @user = User.find_or_create_by!(first_name: "John", last_name: "Pearson", email: "john.pearson@example.com")
+    @user = current_user
   end
 
   def set_question

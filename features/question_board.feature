@@ -4,7 +4,9 @@ Feature: Manage User Questions
     I want to be able to submit my query
 
     Background: Submit query
-        When I visit the legal advice board
+        Given I am a registered user
+        When I log in with valid credentials
+        And I visit the legal advice board
 
     Scenario Outline: Submit query with valid details
         And I enter a question with title "<title>", body "<body>" and category "<category>"

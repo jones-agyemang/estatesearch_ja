@@ -10,6 +10,7 @@ When('I enter valid query details') do
 end
 
 When('I enter a question with title {string}, body {string} and category {string}') do |title, body, category|
+  click_on "Add new question"
   fill_in 'question[title]', with: title
   fill_in 'question[body]', with: body
   fill_in 'question[category]', with: category

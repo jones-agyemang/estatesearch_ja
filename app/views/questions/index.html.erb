@@ -1,4 +1,11 @@
+<div>
+  <p>Logged in as: <%= @user.email %></p>
+</div>
 <h1>Questions</h1>
+
+<div>
+  <%= link_to("Add new question", new_user_question_path(@user)) %>
+</div>
 
 <div><%= flash[:notice] %></div>
 <% if @questions.any? %>

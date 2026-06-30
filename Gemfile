@@ -40,6 +40,7 @@ gem "thruster", require: false
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 
+gem "devise"
 gem "rubocop", require: false
 
 group :development, :test do
@@ -65,6 +66,7 @@ group :test do
   gem "capybara"
   gem "cucumber-rails", require: false
   gem "database_cleaner"
+  gem "launchy"
   gem "selenium-webdriver"
   gem "shoulda-matchers"
 end
