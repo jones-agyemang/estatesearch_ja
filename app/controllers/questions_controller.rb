@@ -1,4 +1,5 @@
 class QuestionsController < ApplicationController
+  before_action :set_user
   before_action :set_question, only: [ :create ]
 
   def index
@@ -6,7 +7,7 @@ class QuestionsController < ApplicationController
   end
 
   def new
-    @question = Question.new
+    @question = @user.questions.new
 
     render :new
   end
@@ -22,8 +23,12 @@ class QuestionsController < ApplicationController
 
   private
 
+  def set_user
+    @user = User.find_or_create_by!(first_name: "John", last_name: "Pearson", email: "john.pearson@example.com")
+  end
+
   def set_question
-    @question = Question.new(question_params)
+    @question = @user.questions.new(question_params)
   end
 
   def question_params

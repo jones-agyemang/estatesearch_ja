@@ -11,4 +11,8 @@ RSpec.describe Question, type: :model do
     is_expected.to define_enum_for(:status).with_values(%i[open answered closed])
                                            .with_default(:open)
   end
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:user) }
+  end
 end
