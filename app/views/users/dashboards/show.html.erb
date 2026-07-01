@@ -12,35 +12,36 @@
 <% if @questions.any? %>
   <% @questions.each do |question| %>
     <h2>Title: <%= question.title %><h2>
-    Body: <%= question.body %>
+    <p>Body: <%= question.body %></p>
     <p>Category: <%= question.category %><p>
+    <p>Question status: <%= question.status %><p>
 
-    <% question.responses.each do |response| %>
-      <table>
-        <thead>
-          <tr>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <% if response.paid %>
+    <h3>Response(s)</h3>  
+    <table>
+      <thead>
+        <tr>
+          <th>Respondent</th>
+          <th>Content</th>
+          <th>Response status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% question.responses.each do |response| %>
+          <% if response.paid %>
+            <tr>
+              <td><%= response.lawyer.email %></td>
               <td><%= response.body %></td>
-              <td style="color: green;">Answered</td>
-            <% else %>
-              <td style="color: red;">Payment pending</td>
-              <td>
-                <%= button_to("Approve payment", approve_payment_question_response_path(question, response), method: :patch) %>
-              </td>
-            <% end %>
-          <tr>
-        </tbody>
-      </table>
-
-      <div>
-      </div>
-    <% end %>
+              <td><%= response.paid ? "Paid" : "Unpaid" %></td>
+            </tr>
+          <% else %>
+            <td style="color: red;">Payment pending</td>
+            <td>
+              <%= button_to("Approve payment for GBP #{response.fee.round(2)}", approve_payment_question_response_path(question, response), method: :patch) %>
+            </td>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
     <hr>
   <% end %>
 <% else %>

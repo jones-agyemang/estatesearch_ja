@@ -21,7 +21,7 @@ class QuestionsController < ApplicationController
 
   def create
     if @question.save
-      redirect_to user_questions_path, notice: "Query successfully raised!"
+      redirect_to users_dashboard_path, notice: "Query successfully raised!"
     else
       flash.now[:error] = "Invalid query details."
       render :new, status: :unprocessable_entity
