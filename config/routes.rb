@@ -14,9 +14,14 @@ Rails.application.routes.draw do
   end
 
   resources :questions do
-    resources :responses
+    resources :responses do
+      member do
+        patch :approve_payment
+      end
+    end
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
   root "questions#index"
+  # root "dashboard#index"
 end

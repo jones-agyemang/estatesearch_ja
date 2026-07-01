@@ -8,28 +8,41 @@
 </div>
 
 <div><%= flash[:notice] %></div>
+<div><%= flash[:alert] %></div>
 <% if @questions.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Body</th>
-        <th>Category</th>
-        <th>Status</th>
-      </tr>
-    </thead>
+  <% @questions.each do |question| %>
+    <h2>Title: <%= question.title %><h2>
+    Body: <%= question.body %>
+    <p>Category: <%= question.category %><p>
 
-    <tbody>
-      <% @questions.each do |question| %>
-        <tr>
-          <td><%= question.title %></td>
-          <td><%= question.body %></td>
-          <td><%= question.category %></td>
-          <td><%= question.status %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+    <% question.responses.each do |response| %>
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <% if response.paid %>
+              <td><%= response.body %></td>
+              <td style="color: green;">Answered</td>
+            <% else %>
+              <td style="color: red;">Payment pending</td>
+              <td>
+                <%= button_to("Approve payment", approve_payment_question_response_path(question, response), method: :patch) %>
+              </td>
+            <% end %>
+          <tr>
+        </tbody>
+      </table>
+
+      <div>
+      </div>
+    <% end %>
+    <hr>
+  <% end %>
 <% else %>
   <p>No questions have been submitted yet.</p>
 <% end %>

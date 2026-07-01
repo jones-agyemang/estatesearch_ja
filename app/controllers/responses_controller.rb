@@ -19,6 +19,21 @@ class ResponsesController < ApplicationController
     end
   end
 
+  def approve_payment
+    response = @question.responses.joins(:payment_request).find_by(paid: false)
+
+    if response
+      ActiveRecord::Base.transaction do
+        response.update!(paid: true)
+        @question.answered!
+      end
+
+      redirect_to users_dashboard_path, notice: "Payment approved and question marked as answered."
+    else
+      redirect_to users_dashboard_path, alert: "No unpaid response found for this question."
+    end
+  end
+
   private
 
   def set_lawyer
@@ -26,11 +41,7 @@ class ResponsesController < ApplicationController
   end
 
   def set_question
-    @question = Question.find(question_id)
-  end
-
-  def question_id
-    params.expect(:question_id)
+    @question = Question.find(params.expect(:question_id))
   end
 
   def response_params
