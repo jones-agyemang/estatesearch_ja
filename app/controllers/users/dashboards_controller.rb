@@ -3,6 +3,6 @@ class Users::DashboardsController < ApplicationController
 
   def show
     @user = current_user
-    @questions = @user.questions
+    @questions = @user.questions.order(updated_at: :desc)
   end
 end
