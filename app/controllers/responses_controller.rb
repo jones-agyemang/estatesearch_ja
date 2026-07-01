@@ -1,17 +1,17 @@
 class ResponsesController < ApplicationController
-  before_action :set_user
+  before_action :set_lawyer
   before_action :set_question
 
   def new
-    @response = @question.responses.new(lawyer_id: @user.id)
+    @response = @question.responses.new(lawyer_id: @lawyer.id)
 
     render :new
   end
 
   def create
-    @response = @user.responses.new(**response_params, question: @question)
+    @response = @lawyer.responses.new(**response_params, question: @question)
 
-    if @response.save
+    if create_response_with_payment_request
       redirect_to lawyers_dashboard_path, notice: "Successfully submitted response."
     else
       flash.now[:error] = "Response is invalid."
@@ -21,8 +21,8 @@ class ResponsesController < ApplicationController
 
   private
 
-  def set_user
-    @user = current_user
+  def set_lawyer
+    @lawyer = current_user
   end
 
   def set_question
@@ -35,5 +35,14 @@ class ResponsesController < ApplicationController
 
   def response_params
     params.expect(response: [ :body, :fee ])
+  end
+
+  def create_response_with_payment_request
+    ActiveRecord::Base.transaction do
+      @response.save!
+      @response.create_payment_request!(lawyer: @lawyer)
+    end
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 end

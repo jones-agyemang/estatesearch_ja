@@ -48,6 +48,19 @@ RSpec.describe "Response", type: :request do
 
         expect(response.body).to include("Successfully submitted response.")
       end
+
+      it "sends a simulated payment request" do
+        expect do
+          post question_responses_path(question), params: response_params
+        end.to change(PaymentRequest, :count).by(1)
+
+        payment_request = PaymentRequest.last
+
+        expect(payment_request).to have_attributes(
+          lawyer: lawyer,
+          response: Response.last
+        )
+      end
     end
 
     context "with invalid parameters" do
