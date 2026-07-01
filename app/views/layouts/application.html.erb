@@ -24,7 +24,11 @@
 
   <body class="min-h-screen bg-slate-50 text-slate-900">
     <% if user_signed_in? %>
-      <%= button_to "Sign out", destroy_user_session_path, method: :delete %>
+      <%= link_to(
+        "Sign out",
+        destroy_user_session_path,
+        class: "inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+      ) %>
     <% end %>
 
     <%= yield %>

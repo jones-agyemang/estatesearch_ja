@@ -1,33 +1,54 @@
-<div>
-  <p>Logged in as: <%= @user.email %></p>
-</div>
-<h1>Questions</h1>
+<main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+  <header class="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm text-slate-600">Logged in as: <%= @user.email %></p>
+      <h1 class="mt-2 text-3xl font-semibold text-slate-950">Questions</h1>
+    </div>
+  </header>
 
-<div><%= flash[:notice] %></div>
-<% if @questions.any? %>
-  <table>
-    <thead>
-      <tr>
-        <th>Title</th>
-        <th>Body</th>
-        <th>Category</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-    </thead>
+  <% if flash[:notice].present? %>
+    <div class="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"><%= flash[:notice] %></div>
+  <% end %>
 
-    <tbody>
-      <% @questions.each do |question| %>
-        <tr>
-          <td><%= question.title %></td>
-          <td><%= question.body %></td>
-          <td><%= question.category %></td>
-          <td><%= question.status %></td>
-          <td><%= link_to('Respond', new_question_response_path(question)) %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  <p>No questions have been submitted yet.</p>
-<% end %>
+  <% if flash[:alert].present? %>
+    <div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><%= flash[:alert] %></div>
+  <% end %>
+
+  <% if @questions.any? %>
+    <div class="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+      <table class="min-w-full divide-y divide-slate-200 text-sm">
+        <thead class="bg-slate-50">
+          <tr>
+            <th class="px-4 py-3 text-left font-medium text-slate-700">Title</th>
+            <th class="px-4 py-3 text-left font-medium text-slate-700">Body</th>
+            <th class="px-4 py-3 text-left font-medium text-slate-700">Category</th>
+            <th class="px-4 py-3 text-left font-medium text-slate-700">Status</th>
+            <th class="px-4 py-3 text-left font-medium text-slate-700">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-slate-100 bg-white">
+          <% @questions.each do |question| %>
+            <tr>
+              <td class="px-4 py-3 font-medium text-slate-950"><%= question.title %></td>
+              <td class="px-4 py-3 text-slate-700"><%= question.body %></td>
+              <td class="px-4 py-3 text-slate-700"><%= question.category %></td>
+              <td class="px-4 py-3 text-slate-700"><%= question.status %></td>
+              <td class="px-4 py-3">
+                <%= link_to(
+                  "Respond",
+                  new_question_response_path(question),
+                  class: "inline-flex items-center justify-center rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                ) %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% else %>
+    <div class="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">
+      No questions have been submitted yet.
+    </div>
+  <% end %>
+</main>
