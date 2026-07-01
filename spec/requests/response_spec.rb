@@ -78,7 +78,7 @@ RSpec.describe "Response", type: :request do
           post question_responses_path(question), params: response_params
         end.not_to change(Response, :count)
 
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(response.body).to include("Response is invalid.")
         expect(CGI.unescapeHTML(response.body)).to include("Body can't be blank")
       end

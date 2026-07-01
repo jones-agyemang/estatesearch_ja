@@ -15,7 +15,7 @@ class ResponsesController < ApplicationController
       redirect_to lawyers_dashboard_path, notice: "Successfully submitted response."
     else
       flash.now[:error] = "Response is invalid."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

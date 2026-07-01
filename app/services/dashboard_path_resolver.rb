@@ -1,6 +1,6 @@
 class DashboardPathResolver
   def self.call(user, routes)
-    case user.type&.downcase
+    case user&.type&.downcase
     when "user", nil
       routes.users_dashboard_path
     when "lawyer"

@@ -24,7 +24,7 @@ class QuestionsController < ApplicationController
       redirect_to users_dashboard_path, notice: "Query successfully raised!"
     else
       flash.now[:error] = "Invalid query details."
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_content
     end
   end
 

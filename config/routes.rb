@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  resource :dashboard
+
   namespace :users do
     resource :dashboard, only: :show
   end
@@ -22,6 +24,5 @@ Rails.application.routes.draw do
   end
 
   get "up" => "rails/health#show", as: :rails_health_check
-  root "questions#index"
-  # root "dashboard#index"
+  root "dashboards#show"
 end

@@ -38,7 +38,7 @@ RSpec.describe "Questions", type: :request do
           answered_question = create(:question, :answered, user: other_user)
           closed_question   = create(:question, :closed, user: other_user)
 
-          get "/"
+          get lawyers_dashboard_path
 
           expect(response).to have_http_status(:ok)
           expect(response.body).to include(open_question.title)
