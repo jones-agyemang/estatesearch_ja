@@ -9,6 +9,6 @@ RSpec.describe Response, type: :model do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:body) }
-    it { is_expected.to validate_numericality_of(:fee) }
+    it { is_expected.to validate_numericality_of(:fee).is_greater_than_or_equal_to(0) }
   end
 end
