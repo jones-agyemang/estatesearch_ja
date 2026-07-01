@@ -182,4 +182,4 @@ bin/brakeman
 ```
 
 ## Deployment
---
+This application is deployed using Render. Commits to the `main` [branch](https://github.com/jones-agyemang/estatesearch_ja) triggers deployment to [Legal Q&A Board - Production](https://legal-board-qpia.onrender.com/).
