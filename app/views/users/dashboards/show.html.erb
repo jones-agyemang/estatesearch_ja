@@ -1,49 +1,80 @@
-<div>
-  <p>Logged in as: <%= @user.email %></p>
-</div>
-<h1>Questions</h1>
+<main class="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+  <header class="mb-8 flex flex-col gap-4 border-b border-slate-200 pb-6 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <p class="text-sm text-slate-600">Logged in as: <%= @user.email %></p>
+      <h1 class="mt-2 text-3xl font-semibold text-slate-950">Questions</h1>
+    </div>
 
-<div>
-  <%= link_to("Add new question", new_user_question_path(@user)) %>
-</div>
+    <%= link_to(
+      "Add new question",
+      new_user_question_path(@user),
+      class: "inline-flex items-center justify-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+    ) %>
+  </header>
 
-<div><%= flash[:notice] %></div>
-<div><%= flash[:alert] %></div>
-<% if @questions.any? %>
-  <% @questions.each do |question| %>
-    <h2>Title: <%= question.title %><h2>
-    <p>Body: <%= question.body %></p>
-    <p>Category: <%= question.category %><p>
-    <p>Question status: <%= question.status %><p>
-
-    <h3>Response(s)</h3>  
-    <table>
-      <thead>
-        <tr>
-          <th>Respondent</th>
-          <th>Content</th>
-          <th>Response status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% question.responses.each do |response| %>
-          <% if response.paid %>
-            <tr>
-              <td><%= response.lawyer.email %></td>
-              <td><%= response.body %></td>
-              <td><%= response.paid ? "Paid" : "Unpaid" %></td>
-            </tr>
-          <% else %>
-            <td style="color: red;">Payment pending</td>
-            <td>
-              <%= button_to("Approve payment for GBP #{response.fee.round(2)}", approve_payment_question_response_path(question, response), method: :patch) %>
-            </td>
-          <% end %>
-        <% end %>
-      </tbody>
-    </table>
-    <hr>
+  <% if flash[:notice].present? %>
+    <div class="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"><%= flash[:notice] %></div>
   <% end %>
-<% else %>
-  <p>No questions have been submitted yet.</p>
-<% end %>
+
+  <% if flash[:alert].present? %>
+    <div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><%= flash[:alert] %></div>
+  <% end %>
+
+  <% if @questions.any? %>
+    <div class="space-y-6">
+      <% @questions.each do |question| %>
+        <section class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <div class="space-y-2">
+            <h2 class="text-xl font-semibold text-slate-950"><%= question.title %></h2>
+            <p class="text-slate-700"><%= question.body %></p>
+            <p class="text-sm text-slate-600">Category: <%= question.category %></p>
+            <p class="text-sm font-medium text-slate-700">Question status: <%= question.status %></p>
+          </div>
+
+          <div class="mt-6 border-t border-slate-100 pt-6">
+            <% if question.responses.any? %>
+              <h3 class="mb-3 text-base font-semibold text-slate-950">Responses</h3>
+                <div class="overflow-hidden rounded-md border border-slate-200">
+                  <table class="min-w-full divide-y divide-slate-200 text-sm">
+                    <thead class="bg-slate-50">
+                      <tr>
+                        <th class="px-4 py-3 text-left font-medium text-slate-700">Respondent</th>
+                        <th class="px-4 py-3 text-left font-medium text-slate-700">Content</th>
+                        <th class="px-4 py-3 text-left font-medium text-slate-700">Response status</th>
+                      </tr>
+                    </thead>
+                    <% question.responses.each do |response| %>
+                      <tbody class="divide-y divide-slate-100 bg-white">
+                        <tr>
+                          <td class="px-4 py-3 text-slate-700"><%= response.lawyer.email %></td>
+                          <td class="px-4 py-3 text-slate-700"><%= response.paid? ? response.body : "[Hidden]" %></td>
+                          <td>
+                            <% if response.paid? %>
+                              <p class="px-4 py-3 text-slate-700">Paid</p>
+                            <% else %>
+                              <%= button_to(
+                                "Approve payment for GBP #{response.fee.round(2)}",
+                                approve_payment_question_response_path(question, response),
+                                method: :patch,
+                                class: "rounded-md bg-slate-900 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                              ) %>
+                            <% end %>
+                          <td>
+                        </tr>
+                      </tbody>
+                    <% end %>
+                  </table>
+                </div>
+            <% else %>
+              <p class="text-sm text-slate-500">Responses will appear here</p>
+            <% end %>
+          </div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-slate-600">
+      No questions have been submitted yet.
+    </div>
+  <% end %>
+</main>

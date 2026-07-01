@@ -4,4 +4,5 @@ class Response < ApplicationRecord
   has_one :payment_request, dependent: :destroy
 
   validates :body, presence: true
+  validates :fee, numericality: true
 end

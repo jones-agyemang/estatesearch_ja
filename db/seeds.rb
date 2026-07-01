@@ -32,5 +32,8 @@ end
     category: "Defamation"
   }
 ].each do |question_attributes|
-  dummy_user.questions.create!(question_attributes)
+  title = question_attributes[:title]
+  question = dummy_user.questions.find_by(title:)
+
+  dummy_user.questions.create!(question_attributes) unless question
 end
