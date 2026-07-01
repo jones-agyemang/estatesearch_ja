@@ -1,6 +1,22 @@
 # Legal Advice Q&A Board
 Legal Advice Q&A Board is a Rails application for legal queries. Users can register, raise questions, and review responses. Lawyers can register(for verification purposes), view open questions, submit responses with a fee, and trigger a payment request. A user approves payment to unlock a response and mark the question as answered.
 
+## Demo: Access
+The live demo is deployed on Render here: [Legal Q&A Board - Production](https://legal-board-qpia.onrender.com/).
+
+#### Access
+To view existing questions and responses use the following credentials to assume a the role of a "user" or a "lawyer"
+
+**User:**
+- Email: john.doe@example.com
+- Password: t0ps3kr3t
+
+**Lawyer:**
+- Email: lawyer.jane.doe@example.com
+- Password: utm05ts3kr3t
+
+_**Note**: These accounts are for demo purposes only. They are insecure and should not be used for recording sensitive questions or responses._ 
+
 ### Core Features
 
 Users can:
@@ -119,6 +135,12 @@ Load the schema into a fresh database with:
 
 ```bash
 bin/rails db:schema:load
+```
+
+Seed the database to get started quickly
+
+```bash
+bin/rails db:seed
 ```
 
 ## Testing
