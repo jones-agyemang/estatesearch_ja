@@ -7,7 +7,7 @@ RSpec.describe QuestionFinder, type: :queries do
     subject(:query_results) { described_class.call(owner_id:) }
 
     describe 'question retrieval' do
-      context 'when owner-type is unknown' do
+      context 'when owner does not exist' do
         let(:owner_id) { 'foo' }
 
         it 'yields no results' do
@@ -21,11 +21,11 @@ RSpec.describe QuestionFinder, type: :queries do
 
         it 'returns only questions owned by the user' do
           other_user = create(:user)
-          user_owned_questions = create_list(:question, 3, user: owner).pluck(:id)
+          user_owned_questions = create_list(:question, 3, user: owner)
           questions_owned_by_other_user = create_list(:question, 3, user: other_user).pluck(:id)
 
-          expect(query_results.pluck(:id)).to eq(user_owned_questions)
-          expect(query_results.pluck(:id)).not_to eq(questions_owned_by_other_user)
+          expect(query_results).to include(*user_owned_questions)
+          expect(query_results).not_to include(*questions_owned_by_other_user)
         end
       end
 

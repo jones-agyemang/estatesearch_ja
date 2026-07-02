@@ -4,7 +4,7 @@ class Lawyers::DashboardsController < ApplicationController
 
   def show
     @user = current_user
-    @questions = Question.open
+    @questions = QuestionFinder.call(owner_id: @user.id)
   end
 
   private

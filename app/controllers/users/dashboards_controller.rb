@@ -3,6 +3,6 @@ class Users::DashboardsController < ApplicationController
 
   def show
     @user = current_user
-    @questions = @user.questions.order(updated_at: :desc)
+    @questions = QuestionFinder.call(owner_id: @user.id)
   end
 end
