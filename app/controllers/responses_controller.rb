@@ -1,5 +1,6 @@
 class ResponsesController < ApplicationController
   before_action :set_lawyer
+  before_action :require_lawyer!
   before_action :set_question
 
   def new
@@ -38,6 +39,12 @@ class ResponsesController < ApplicationController
 
   def set_lawyer
     @lawyer = current_user
+  end
+
+  def require_lawyer!
+    return if current_user.is_a?(Lawyer)
+
+    redirect_to users_dashboard_path, alert: "You must be a lawyer to access the lawyer dashboard."
   end
 
   def set_question

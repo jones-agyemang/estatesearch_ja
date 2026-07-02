@@ -61,6 +61,17 @@ RSpec.describe "Response", type: :request do
           response: Response.last
         )
       end
+
+      context "non-lawyer account" do
+        let(:lawyer) { create(:user) }
+
+        it "redirects to default dashboard path" do
+          post question_responses_path(question), params: response_params
+
+          expect(response).to have_http_status(:found)
+          expect(response).to redirect_to(users_dashboard_path)
+        end
+      end
     end
 
     context "with invalid parameters" do
