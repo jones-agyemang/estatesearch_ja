@@ -7,6 +7,19 @@ RSpec.describe QuestionFinder, type: :queries do
     subject(:query_results) { described_class.call(owner_id:) }
 
     describe 'question retrieval' do
+      describe 'ordering' do
+        let(:user) { create(:user) }
+        let(:owner_id) { user.id }
+
+        it 'returns the latest questions' do
+          older_question = create(:question, user:, updated_at: 7.days.ago)
+          latest_question = create(:question, user:, updated_at: 1.day.ago)
+
+          expect(query_results.first).to eq(latest_question)
+          expect(query_results.last).to eq(older_question)
+        end
+      end
+
       context 'when owner does not exist' do
         let(:owner_id) { 'foo' }
 
