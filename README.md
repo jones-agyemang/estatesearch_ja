@@ -82,6 +82,8 @@ Payment flow:
     - 
 - Design
     - 
+- Database
+    - database migration files should have been committed separately from other changes to ensure fast, enforceable recovery action in case co-shipped changes break and code-specific rollback has a bearing on perfectly fine DB migration changes that could/should have been shipped independently 
     
 ## Routes
 
