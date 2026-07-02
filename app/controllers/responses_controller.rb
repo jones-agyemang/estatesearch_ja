@@ -1,6 +1,6 @@
 class ResponsesController < ApplicationController
   before_action :set_lawyer
-  before_action :require_lawyer!
+  before_action :require_lawyer!, only: [ :new, :create ]
   before_action :set_question
 
   def new

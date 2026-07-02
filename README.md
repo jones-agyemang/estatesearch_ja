@@ -76,6 +76,13 @@ Payment flow:
 4. The lawyer submits a response and fee.
 5. The app creates the response and matching payment request in one database transaction.
 
+## Future Improvements
+- Implementation
+    - Extract approve payment action into a separate controller, i.e., payment controller
+    - 
+- Design
+    - 
+    
 ## Routes
 
 Important routes include:
