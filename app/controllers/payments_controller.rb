@@ -4,19 +4,12 @@ class PaymentsController < ApplicationController
   before_action :set_question
 
   def approve_payment
-    response = @question.responses
-                        .joins(:payment_request)
-                        .find_by(id: response_id, paid: false)
+    result = Payments::Approval.call(@user, @question, response_id)
 
-    if response
-      ActiveRecord::Base.transaction do
-        response.update!(paid: true)
-        @question.answered!
-      end
-
-      redirect_to users_dashboard_path, notice: "Payment approved and question marked as answered."
+    if result.success?
+      redirect_to users_dashboard_path, notice: result.message
     else
-      redirect_to users_dashboard_path, alert: "No unpaid response found for this question."
+      redirect_to users_dashboard_path, alert: result.message
     end
   end
 

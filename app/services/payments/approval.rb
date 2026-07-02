@@ -24,12 +24,14 @@ module Payments
       return failure(MESSAGE_MAP.fetch(:question_not_yours)) if question.user != user
 
       response = question.responses
-                        .joins(:payment_request)
-                        .find_by(id: response_id, paid: false)
+                         .joins(:payment_request)
+                         .find_by(id: response_id, paid: false)
 
       if response
-        response.update!(paid: true)
-        question.answered!
+        ActiveRecord::Base.transaction do
+          response.update!(paid: true)
+          question.answered!
+        end
 
         success(MESSAGE_MAP.fetch(:payment_approved))
       else
