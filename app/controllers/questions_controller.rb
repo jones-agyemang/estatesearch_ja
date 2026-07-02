@@ -4,15 +4,6 @@ class QuestionsController < ApplicationController
   before_action :set_user
   before_action :set_question, only: [ :create ]
 
-  def index
-    # TODO: Remove condition
-    if @user.type&.downcase == "lawyer"
-      @questions = Question.open
-    else
-      @questions = @user.questions
-    end
-  end
-
   def new
     @question = @user.questions.new
 

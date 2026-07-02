@@ -27,7 +27,7 @@ Rails.application.routes.draw do
   end
 
   resources :users do
-    resources :questions
+    resources :questions, only: [ :new, :create ]
   end
 
   resources :questions do

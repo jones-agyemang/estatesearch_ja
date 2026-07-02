@@ -7,7 +7,7 @@ RSpec.describe "Questions", type: :request do
   describe 'GET /users/:user_id/questions' do
     context 'when user is not authenticated' do
       it 'returns user to login in page' do
-        get user_questions_path(user)
+        get users_dashboard_path
 
         expect(response).to have_http_status(:found)
         expect(response).to redirect_to(new_user_session_path)
@@ -18,11 +18,11 @@ RSpec.describe "Questions", type: :request do
       before { sign_in user }
 
       context "when this is a non-lawyer account" do
-        it "returns user-owned questions" do
+        it "returns only questions belonging to the user" do
           my_question = create(:question, user:, title: "My question")
           other_question = create(:question, user: other_user, title: "Not my question")
 
-          get user_questions_path(user)
+          get users_dashboard_path
 
           expect(response).to have_http_status(:ok)
           expect(response.body).to include(my_question.title)
