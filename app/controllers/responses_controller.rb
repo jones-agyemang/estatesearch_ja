@@ -20,7 +20,7 @@ class ResponsesController < ApplicationController
   end
 
   def approve_payment
-    response = @question.responses.joins(:payment_request).find_by(paid: false)
+    response = @question.responses.joins(:payment_request).find_by(id: response_id, paid: false)
 
     if response
       ActiveRecord::Base.transaction do
@@ -42,6 +42,10 @@ class ResponsesController < ApplicationController
 
   def set_question
     @question = Question.find(params.expect(:question_id))
+  end
+
+  def response_id
+    params.expect(:id)
   end
 
   def response_params
