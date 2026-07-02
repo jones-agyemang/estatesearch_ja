@@ -1,5 +1,13 @@
 module Payments
   class Approval
+    Result = Data.define(:success?, :message)
+
+    MESSAGE_MAP = {
+        non_open_question: "Question has already been already answered or close.",
+        payment_approved: "Payment approved and question marked as answered.",
+        payment_already_made: "Question has already been already answered or close."
+    }
+
     def initialize(user, question, response_id)
       @user = user
       @question = question
@@ -11,7 +19,7 @@ module Payments
     end
 
     def call
-      result = Data.define(:success?, :message)
+      return failure(MESSAGE_MAP.fetch(:non_open_question)) if !question.open?
 
       response = question.responses
                         .joins(:payment_request)
@@ -20,14 +28,22 @@ module Payments
       if response
         response.update!(paid: true)
         question.answered!
-        result.new(success?: true, message: "Payment approved and question marked as answered.")
+        success(MESSAGE_MAP.fetch(:payment_approved))
       else
-        result.new(success?: false, message: "Payment has already been made for this question.")
+        failure(MESSAGE_MAP.fetch(:payment_already_made))
       end
     end
 
     private
 
     attr_accessor :user, :question, :response_id
+
+    def failure(message)
+      Result.new(success?: false, message:)
+    end
+
+    def success(message)
+      Result.new(success?: true, message:)
+    end
   end
 end

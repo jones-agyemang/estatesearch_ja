@@ -7,5 +7,9 @@ FactoryBot.define do
     trait :answered do
       status { "answered" }
     end
+
+    trait :closed do
+      status { "closed" }
+    end
   end
 end

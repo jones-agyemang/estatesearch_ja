@@ -15,14 +15,29 @@ RSpec.describe Payments::Approval, type: :service do
     context "when payment request is unpaid" do
       let(:paid) { false }
 
-      it "approves payment and marks question as answered" do
-        result = invoke_payment_approval!
+      context "when question is open" do
+        it "approves payment and marks question as answered" do
+          result = invoke_payment_approval!
 
-        expect(response.reload).to be_paid
-        expect(question.reload).to be_answered
+          expect(response.reload).to be_paid
+          expect(question.reload).to be_answered
 
-        expect(result.success?).to eq(true)
-        expect(result.message).to eq("Payment approved and question marked as answered.")
+          expect(result.success?).to eq(true)
+          expect(result.message).to eq("Payment approved and question marked as answered.")
+        end
+      end
+
+      context "when question is closed" do
+        let(:question) { create(:question, :closed, user:) }
+
+        it "declines payment and question should remain closed" do
+          result = invoke_payment_approval!
+
+          expect(question).to be_closed
+          expect(response).not_to be_paid
+          expect(result.success?).to eq(false)
+          expect(result.message).to eq("Question has already been already answered or close.")
+        end
       end
     end
   end
