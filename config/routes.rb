@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   resources :questions do
     resources :responses do
       member do
-        patch :approve_payment
+        patch :approve_payment, to: "payments#approve_payment"
       end
     end
   end
