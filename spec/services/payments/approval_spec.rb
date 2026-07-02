@@ -5,7 +5,7 @@ RSpec.describe Payments::Approval, type: :service do
     let(:user) { create(:user) }
     let(:question) { create(:question, user:) }
     let(:lawyer) { create(:lawyer) }
-    let!(:response) { create(:response, paid:, question:, lawyer:) }
+    let!(:response) { create(:response, question:, lawyer:) }
     let!(:payment_request) { create(:payment_request, lawyer:, response:) }
 
     subject(:invoke_payment_approval!) do
@@ -13,7 +13,7 @@ RSpec.describe Payments::Approval, type: :service do
     end
 
     context "when payment request is unpaid" do
-      let(:paid) { false }
+      # let(:paid) { false }
 
       context "when question is open" do
         it "approves payment and marks question as answered" do
@@ -35,8 +35,26 @@ RSpec.describe Payments::Approval, type: :service do
 
           expect(question).to be_closed
           expect(response).not_to be_paid
+
           expect(result.success?).to eq(false)
           expect(result.message).to eq("Question has already been already answered or close.")
+        end
+      end
+    end
+
+    describe "non-owner cannot approve payment" do
+      context "when user is not the owner of the question" do
+        let(:other_user) { create(:user) }
+        let(:question) { create(:question, user: other_user) }
+
+        it "declines payment and question should remain closed" do
+          result = invoke_payment_approval!
+
+          expect(question).to be_open
+          expect(response).not_to be_paid
+
+          expect(result.success?).to eq(false)
+          expect(result.message).to eq("Question belongs to another user.")
         end
       end
     end

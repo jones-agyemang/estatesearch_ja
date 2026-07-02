@@ -5,7 +5,8 @@ module Payments
     MESSAGE_MAP = {
         non_open_question: "Question has already been already answered or close.",
         payment_approved: "Payment approved and question marked as answered.",
-        payment_already_made: "Question has already been already answered or close."
+        payment_already_made: "Question has already been already answered or close.",
+        question_not_yours: "Question belongs to another user."
     }
 
     def initialize(user, question, response_id)
@@ -20,6 +21,7 @@ module Payments
 
     def call
       return failure(MESSAGE_MAP.fetch(:non_open_question)) if !question.open?
+      return failure(MESSAGE_MAP.fetch(:question_not_yours)) if question.user != user
 
       response = question.responses
                         .joins(:payment_request)
@@ -28,6 +30,7 @@ module Payments
       if response
         response.update!(paid: true)
         question.answered!
+
         success(MESSAGE_MAP.fetch(:payment_approved))
       else
         failure(MESSAGE_MAP.fetch(:payment_already_made))
