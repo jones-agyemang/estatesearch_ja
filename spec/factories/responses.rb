@@ -5,4 +5,8 @@ FactoryBot.define do
     association :lawyer
     association :question
   end
+
+  trait :paid do
+    paid { true }
+  end
 end
