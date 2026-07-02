@@ -41,7 +41,7 @@ module Payments
 
     private
 
-    attr_accessor :user, :question, :response_id
+    attr_reader :user, :question, :response_id
 
     def failure(message)
       Result.new(success?: false, message:)
