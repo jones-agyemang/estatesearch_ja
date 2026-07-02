@@ -42,3 +42,15 @@ When('I log in with email {string} and password {string}') do |email, password|
   fill_in "user[password]", with: password
   click_button "Log in"
 end
+
+When('I visit the registration page for type {string}') do |type|
+  visit "/#{type.pluralize}/sign_up"
+end
+
+When('I register with email {string} and password {string}') do |email, password|
+  find("input[name$='[email]']").set(email)
+  find("input[name$='[password]']").set(password)
+  find("input[name$='[password_confirmation]']").set(password)
+
+  click_button "Sign up"
+end

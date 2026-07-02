@@ -1,5 +1,20 @@
 Rails.application.routes.draw do
-  devise_for :users
+  # devise_for :lawyers
+  devise_for :users, controllers: {
+    registrations: "users/registrations"
+  }
+
+  devise_scope :user do
+    get "/lawyers/sign_up",
+        to: "users/registrations#new",
+        defaults: { user_type: "lawyer" },
+        as: :new_lawyer_registration
+
+    post "/lawyers",
+        to: "users/registrations#create",
+        defaults: { user_type: "lawyer" },
+        as: :lawyer_registration
+  end
 
   resource :dashboard
 
