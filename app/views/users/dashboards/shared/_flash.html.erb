@@ -1,0 +1,12 @@
+<div id="flash">
+  <% notice = local_assigns.fetch(:notice, flash[:notice]) %>
+  <% alert = local_assigns.fetch(:alert, flash[:alert]) %>
+
+  <% if notice.present? %>
+    <div class="mb-6 rounded-md border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-800"><%= notice %></div>
+  <% end %>
+
+  <% if alert.present? %>
+    <div class="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"><%= alert %></div>
+  <% end %>
+</div>
