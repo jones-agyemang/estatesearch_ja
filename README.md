@@ -99,7 +99,7 @@ Payment flow:
 
 ### Testing
 
-- Keep Cucumber scenarios documentation readble for non-technical stakeholders.
+- Keep Cucumber scenarios readable as workflow documentation for non-technical stakeholders.
 - Add browser-level coverage with Playwright or Cypress for critical user and lawyer journeys.
 - Add concurrency-focused tests around payment approval and response creation once row-level locking is introduced.
 
@@ -110,6 +110,16 @@ Payment flow:
 ### Database
 
 - Keep database migrations in focused commits where possible, so schema changes can be reviewed, deployed, and rolled back independently from unrelated application code.
+
+## Stretch Goals
+- Used Rails STI to model `Lawyer` as a subtype of `User`, rather than relying on a simple simulated role flag. Makes for clearner authentication and authorization
+- Included role-aware registration for `Lawyers` and `Users`
+- Enforced role-restricted access to prevent authenticated users gaining exposure to lawyers' dashboard
+- Added owner-only payment approval
+- Extracted payment approval into a service object to preserve domain logic and keep controllers thin
+- Added Turbo Stream support for payment approval, allowing user dashboard to reveal hidden response in place after payment is approved
+- Added TailwindCSS styling and clearer dashboard formatting for questions, responses, payment status and role-specific views
+- Used Cucumber feature specs alongside RSpec to document essential user and lawyer journeys in a stakeholder-readable format
 
 ## Routes
 
