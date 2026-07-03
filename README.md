@@ -1,11 +1,11 @@
 # Legal Advice Q&A Board
-Legal Advice Q&A Board is a Rails application for legal queries. Users can register, raise questions, and review responses. Lawyers can register(for verification purposes), view open questions, submit responses with a fee, and trigger a payment request. A user approves payment to unlock a response and mark the question as answered.
+Legal Advice Q&A Board is a Rails application for legal queries. Users can register, submit questions, and review responses. Lawyers can register for verification purposes, view open questions, submit responses with a fee, and trigger a payment request. A user approves payment to unlock a response and mark the question as answered.
 
 ## Demo: Access
 The live demo is deployed on Render here: [Legal Q&A Board - Production](https://legal-board-qpia.onrender.com/).
 
 #### Access
-To view existing questions and responses use the following credentials to assume a the role of a "user" or a "lawyer"
+To view existing questions and responses, use the following credentials for either the user or lawyer role.
 
 **User:**
 - Email: john.doe@example.com
@@ -46,7 +46,7 @@ Payment flow:
 - Hotwire-ready Rails defaults with Turbo, Stimulus, Importmap, and Propshaft
 - RSpec, FactoryBot, Shoulda Matchers, Capybara, and Cucumber for tests
 - RuboCop Rails Omakase and Brakeman for code quality/security checks
-- Kamal, Docker, Puma, and Thruster for production deployment support
+- Render for production deployment
 
 ## Domain Model
 
@@ -56,7 +56,7 @@ Payment flow:
 - `Response`: belongs to a lawyer and a question, stores the response body, quoted fee, and paid state.
 - `PaymentRequest`: belongs to a lawyer and a response; represents the simulated payment request created when a lawyer submits a response.
 
-## Main Workflows
+## Main Journeys
 
 ### User query flow
 
@@ -77,14 +77,40 @@ Payment flow:
 5. The app creates the response and matching payment request in one database transaction.
 
 ## Future Improvements
-- Implementation
-    - Extract approve payment action into a separate controller, i.e., payment controller
-    - 
-- Design
-    - 
-- Database
-    - database migration files should have been committed separately from other changes to ensure fast, enforceable recovery action in case co-shipped changes break and code-specific rollback has a bearing on perfectly fine DB migration changes that could/should have been shipped independently 
-    
+
+### Functionality
+
+- Replace the lightweight `format_currency` helper with a more robust currency formatting approach that can support multiple currencies and locale-specific formatting.
+- Add row-level locking around payment approval and response creation to prevent races where a lawyer submits a response while payment approval is transitioning the question to `answered`.
+
+### Architecture
+
+- Extract response creation into a service object, matching the payment approval flow.
+- Keep payment approval and response creation responsible for their own transactional boundaries, including question state checks.
+
+### Hotwire
+
+- Use Turbo Streams to refresh a user's dashboard when a lawyer responds to one of their open questions. This would provide a useful real-time update before introducing explicit notification features.
+
+### UI/UX & Design
+
+- Improve lawyer question discovery so older open questions do not get buried behind the latest submissions.
+- Consider sorting or prioritisation options such as oldest unanswered, category, or time since submission.
+
+### Testing
+
+- Keep Cucumber scenarios documentation readble for non-technical stakeholders.
+- Add browser-level coverage with Playwright or Cypress for critical user and lawyer journeys.
+- Add concurrency-focused tests around payment approval and response creation once row-level locking is introduced.
+
+### Deployment
+
+- Add a staging environment before production deployment.
+
+### Database
+
+- Keep database migrations in focused commits where possible, so schema changes can be reviewed, deployed, and rolled back independently from unrelated application code.
+
 ## Routes
 
 Important routes include:
@@ -124,9 +150,14 @@ To start the app later:
 bin/dev
 ```
 
-The development database is `estatesearch_ja_development`; the test database is `estatesearch_ja_test`.
+OR
+
+```bash
+bundle exec rails server
+```
 
 ## Database
+The development database is `estatesearch_ja_development`; the test database is `estatesearch_ja_test`.
 
 Create and prepare the database with:
 
@@ -149,7 +180,7 @@ bin/rails db:schema:load
 Seed the database to get started quickly
 
 ```bash
-bin/rails db:seed
+bundle exec rails db:seed
 ```
 
 ## Testing
@@ -163,7 +194,7 @@ bundle exec rspec
 Run the Cucumber feature suite:
 
 ```bash
-bin/cucumber
+bundle exec cucumber
 ```
 
 Current coverage includes:
@@ -181,14 +212,14 @@ Current coverage includes:
 Run RuboCop:
 
 ```bash
-bin/rubocop
+bundle exec rubocop
 ```
 
 Run Brakeman:
 
 ```bash
-bin/brakeman
+bundle exec brakeman
 ```
 
 ## Deployment
-This application is deployed using Render. Commits to the `main` [branch](https://github.com/jones-agyemang/estatesearch_ja) triggers deployment to [Legal Q&A Board - Production](https://legal-board-qpia.onrender.com/).
+This application is deployed using Render. Commits to the `main` [branch](https://github.com/jones-agyemang/estatesearch_ja) trigger deployment to [Legal Q&A Board - Production](https://legal-board-qpia.onrender.com/).
