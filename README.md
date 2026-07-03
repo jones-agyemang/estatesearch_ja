@@ -15,6 +15,8 @@ To view existing questions and responses, use the following credentials for eith
 - Email: lawyer.jane.doe@example.com
 - Password: utm05ts3kr3t
 
+[READ the QA notes for step by step guidance for exploratory tests.](docs/QA_notes.MD)
+
 _**Note**: These accounts are for demo purposes only. They are insecure and should not be used for recording sensitive questions or responses._ 
 
 ### Core Features
